@@ -47,6 +47,17 @@ button:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
 .card .lbl{font:600 12px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--bronze);margin-top:6px}
 .card ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:4px 16px;font-size:15px}
 .card .close{align-self:flex-end;font:600 13px var(--f-body);color:var(--panel-ink);background:transparent;border:1px solid var(--bronze);border-radius:999px;padding:8px 14px;cursor:pointer}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.thumb{display:flex;flex-direction:column;gap:6px;padding:0;background:transparent;border:0;color:var(--panel-ink);text-align:left;cursor:pointer;font:13px/1.3 var(--f-body);min-width:0}
+.thumb img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:6px;border:1px solid rgba(201,154,91,.45)}
+.thumb:hover img{border-color:var(--bronze)}
+.lightbox{position:fixed;inset:0;z-index:9;background:rgba(12,11,10,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  padding-block:calc(env(safe-area-inset-top,0px) + 56px) calc(env(safe-area-inset-bottom,0px) + 20px);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.lightbox img{max-width:100%;max-height:78vh;object-fit:contain;border-radius:6px}
+.lightbox p{margin:0;color:#f3ede3;font:italic 16px var(--f-display);text-align:center}
+.lb-nav{display:flex;gap:10px}
+.lightbox button{font:600 14px var(--f-body);color:#f3ede3;background:rgba(31,29,27,.9);border:1px solid #c99a5b;border-radius:999px;padding:10px 16px;cursor:pointer}
+.lb-close{position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);right:max(16px,env(safe-area-inset-right,0px))}
 @media (max-width:560px){.hint{bottom:calc(env(safe-area-inset-bottom,0px) + 118px)}}
 @media (prefers-reduced-motion: reduce){.hint{transition:none}}
 </style>
@@ -75,10 +86,19 @@ button:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
   <small id="loadTxt">Carregando a mini cidade…</small>
 </div>
 
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-label="Imagem ampliada">
+  <button type="button" class="lb-close" id="lbClose">Fechar</button>
+  <img id="lbImg" alt="">
+  <p id="lbCap"></p>
+  <div class="lb-nav"><button type="button" id="lbPrev">‹ Anterior</button><button type="button" id="lbNext">Próxima ›</button></div>
+</div>
 <section class="card" id="card" hidden aria-label="Sobre o projeto">
   <div class="inner">
     <button class="close" id="closeCard" type="button">Fechar</button>
     <h3>Um lugar para brincar, descobrir e crescer</h3>
+    <div class="lbl">Imagens do projeto</div>
+    <div class="gallery"><button type="button" class="thumb" data-i="0" aria-label="Ampliar: Vista aérea da mini cidade"><img src="imagens/mini-01-vista-aerea.jpg" alt="Vista aérea da mini cidade" loading="lazy" width="520" height="378"><span>Vista aérea da mini cidade</span></button><button type="button" class="thumb" data-i="1" aria-label="Ampliar: Entrada com o portão Bem-vindos"><img src="imagens/mini-02-entrada.jpg" alt="Entrada com o portão Bem-vindos" loading="lazy" width="520" height="378"><span>Entrada com o portão Bem-vindos</span></button><button type="button" class="thumb" data-i="2" aria-label="Ampliar: Marco com as placas do projeto"><img src="imagens/mini-03-marco-placas.jpg" alt="Marco com as placas do projeto" loading="lazy" width="520" height="378"><span>Marco com as placas do projeto</span></button><button type="button" class="thumb" data-i="3" aria-label="Ampliar: Prefeitura ao anoitecer"><img src="imagens/mini-04-prefeitura.jpg" alt="Prefeitura ao anoitecer" loading="lazy" width="520" height="378"><span>Prefeitura ao anoitecer</span></button><button type="button" class="thumb" data-i="4" aria-label="Ampliar: Ciclovia e Escola"><img src="imagens/mini-05-escola-ciclovia.jpg" alt="Ciclovia e Escola" loading="lazy" width="520" height="378"><span>Ciclovia e Escola</span></button><button type="button" class="thumb" data-i="5" aria-label="Ampliar: Escola e pump track ao entardecer"><img src="imagens/mini-06-escola-pumptrack.jpg" alt="Escola e pump track ao entardecer" loading="lazy" width="520" height="378"><span>Escola e pump track ao entardecer</span></button><button type="button" class="thumb" data-i="6" aria-label="Ampliar: Sanitários e trem para fotos"><img src="imagens/mini-07-sanitarios.jpg" alt="Sanitários e trem para fotos" loading="lazy" width="520" height="378"><span>Sanitários e trem para fotos</span></button></div>
+
     <p>Esta mini cidade transforma a Praça Vereador Aloysius Back, no Bairro Brasília, em Criciúma (SC), em um espaço de aprendizagem sobre a cidade e a cidadania. Em escala infantil, prefeitura, bombeiros, polícia, unidade de saúde, mercado, banco, correios, Detran, Casan e terminal convidam as crianças das escolas municipais a viver a rotina urbana com autonomia, segurança e todos os sentidos. Cada edificação tem fachada na medida da criança e interior acessível aos adultos.</p>
     <div class="lbl">Projeto e concepção · Grupo E</div>
     <ul>
@@ -4997,5 +5017,20 @@ window.CRESCIDADE_GLB="Z2xURgIAAAA06h4AQMMGAEpTT057ImFzc2V0Ijp7ImdlbmVyYXRvciI6I
 })();
 </script>
 
+<script>
+(function(){
+  const IM=[['01-vista-aerea.jpg', 'Vista aérea da mini cidade'], ['02-entrada.jpg', 'Entrada com o portão Bem-vindos'], ['03-marco-placas.jpg', 'Marco com as placas do projeto'], ['04-prefeitura.jpg', 'Prefeitura ao anoitecer'], ['05-escola-ciclovia.jpg', 'Ciclovia e Escola'], ['06-escola-pumptrack.jpg', 'Escola e pump track ao entardecer'], ['07-sanitarios.jpg', 'Sanitários e trem para fotos']];
+  const lb=document.getElementById('lightbox'),img=document.getElementById('lbImg'),cap=document.getElementById('lbCap');let i=0;
+  function show(k){i=(k+IM.length)%IM.length;img.src='imagens/'+IM[i][0];img.alt=IM[i][1];cap.textContent=IM[i][1]+'  ·  '+(i+1)+' de '+IM.length;lb.hidden=false;}
+  document.querySelectorAll('.thumb').forEach(b=>b.addEventListener('click',()=>show(+b.dataset.i)));
+  document.getElementById('lbPrev').addEventListener('click',()=>show(i-1));
+  document.getElementById('lbNext').addEventListener('click',()=>show(i+1));
+  document.getElementById('lbClose').addEventListener('click',()=>{lb.hidden=true;});
+  lb.addEventListener('click',e=>{if(e.target===lb)lb.hidden=true;});
+  document.addEventListener('keydown',e=>{if(lb.hidden)return;if(e.key==='Escape')lb.hidden=true;if(e.key==='ArrowRight')show(i+1);if(e.key==='ArrowLeft')show(i-1);});
+  let x0=null;lb.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;},{passive:true});
+  lb.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)show(i+(dx<0?1:-1));x0=null;});
+})();
+</script>
 </body>
 </html>
