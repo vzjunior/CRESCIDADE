@@ -86,7 +86,6 @@ button:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
 </nav>
 <nav class="views" aria-label="Vistas">
   <button type="button" id="v-geral" aria-pressed="true">Vista geral</button>
-  <button type="button" id="v-crianca" aria-pressed="false">Altura da criança</button>
   <button type="button" id="v-giro" aria-pressed="false">Girar sozinho</button>
 </nav>
 <div class="hint" id="hint">Arraste para girar · pinça ou roda para zoom</div>
@@ -5013,7 +5012,7 @@ window.CRESCIDADE_GLB="Z2xURgIAAAA06h4AQMMGAEpTT057ImFzc2V0Ijp7ImdlbmVyYXRvciI6I
   const SKP={pos:[-13,6.5,-37],tgt:[10,1.5,-50]};   // entrada: portão Bem-vindos e Caminho Arco-Íris
   const KID={pos:[-4.5,1.1,-50],tgt:[20,1.3,-50]};    // olhos a 1,10 m, diante do portão
 
-  ['v-geral','v-crianca'].forEach(id=>{
+  ['v-geral'].forEach(id=>{
     document.getElementById(id).addEventListener('click',()=>{const v=views[id];if(!v)return;setPressed(id);flyTo(v.pos,v.tgt);});
   });
   const giro=document.getElementById('v-giro');
@@ -5046,7 +5045,7 @@ window.CRESCIDADE_GLB="Z2xURgIAAAA06h4AQMMGAEpTT057ImFzc2V0Ijp7ImdlbmVyYXRvciI6I
 </script>
 <script>
 (function(){
-  const TOUR=[['Vista aérea', [-10, 40, 10], [60, 0, -48]], ['Entrada', [-13, 6.5, -37], [10, 1.5, -50]], ['Marco e placas', [10, 4.5, -53], [10, 1.5, -63.6]], ['Prefeitura', [86, 5.5, -42], [101, 2.5, -50]], ['Escola e ciclovia', [128, 3, -68], [139, 2.2, -58]], ['Escola e pump track', [163, 13, -76], [143, 1, -53]], ['Sanitários', [123, 5.5, -33], [131, 1.8, -44]]];
+  const TOUR=[['Vista aérea', [-10, 40, 10], [60, 0, -48]], ['Entrada', [-13, 6.5, -37], [10, 1.5, -50]], ['Marco e placas', [10, 4.5, -53], [10, 1.5, -63.6]], ['Prefeitura', [86, 5.5, -42], [101, 2.5, -50]], ['Escola e ciclovia', [128.5, 7.5, -74], [146.5, 0.5, -54]], ['Escola e pump track', [163, 13, -76], [143, 1, -53]], ['Sanitários', [123, 5.5, -33], [131, 1.8, -44]]];
   const chips=[...document.querySelectorAll('.chip')];
   function go(k){const t=TOUR[k];chips.forEach((c,j)=>c.setAttribute('aria-pressed',String(j===k)));try{chips[k].scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});}catch(e){}if(window.__fly)window.__fly(t[1],t[2]);}
   chips.forEach(c=>c.addEventListener('click',()=>go(+c.dataset.t)));
